@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
+import { Button, Input, Upload } from "antd";
 import { useParams } from "react-router-dom";
 import styles from "./index.module.css";
 import {
@@ -10,6 +11,8 @@ import {
   statusList,
   priorityList,
 } from "@/constant/const";
+
+const { TextArea } = Input;
 
 interface DetailDataProps {
   id: string;
@@ -117,6 +120,12 @@ const DetailPage: React.FC = () => {
       <h2>工单内容: {detailData.content}</h2>
       <h2>工单创建时间: {timeFormat(detailData.createTime)}</h2>
       <h2>工单处理截止时间: {timeFormat(detailData.deadline)}</h2>
+
+      <h1>回复工单</h1>
+      {/*待完善*/}
+      <TextArea placeholder="请输入工单内容" />
+      <Upload listType="picture-card">上传图片</Upload>
+      <Button>回复</Button>
 
       <h1>工单回复内容</h1>
       {detailData.replies?.map((i) => {
