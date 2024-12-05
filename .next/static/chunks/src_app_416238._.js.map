@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/fengyu/JavaScript/tuwei/frontend-2024/src/app/providers/ReactQueryProvider.tsx"],"sourcesContent":["\"use client\";\n\nimport { QueryClient, QueryClientProvider } from \"@tanstack/react-query\";\nimport { ReactQueryDevtools } from \"@tanstack/react-query-devtools\";\nimport { useState } from \"react\";\n\nfunction ReactQueryProvider({ children }: React.PropsWithChildren) {\n  const [queryClient] = useState(\n    () =>\n      new QueryClient({\n        defaultOptions: {\n          queries: {\n            // 默认设置\n            // 设置0以上，以避免在客户端立即重新读取\n            staleTime: 60 * 1000,\n          },\n        },\n      })\n  );\n\n  return (\n    <QueryClientProvider client={queryClient}>\n      {children}\n      <ReactQueryDevtools initialIsOpen={false} />\n    </QueryClientProvider>\n  );\n}\n\nexport default ReactQueryProvider;\n"],"names":[],"mappings":";;;;;;;;;;;;;;AAIA;;;AAJA;;;;AAMA,SAAS,mBAAmB,EAAE,QAAQ,EAA2B;;IAC/D,MAAM,CAAC,YAAY,GAAG,CAAA,GAAA,kQAAA,CAAA,WAAQ,AAAD;uCAC3B,IACE,IAAI,YAAY;gBACd,gBAAgB;oBACd,SAAS;wBACP,OAAO;wBACP,sBAAsB;wBACtB,WAAW,KAAK;oBAClB;gBACF;YACF;;IAGJ,qBACE,kSAAC;QAAoB,QAAQ;;YAC1B;0BACD,kSAAC;gBAAmB,eAAe;;;;;;;;;;;;AAGzC;GApBS;KAAA;uCAsBM"}},
-    {"offset": {"line": 67, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}
