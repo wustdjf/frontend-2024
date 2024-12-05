@@ -21,6 +21,13 @@ const routes: RouteObject[] = [
           Component: (await import("@/pages/main")).default,
         }),
       },
+
+      {
+        path: "/detail/:id",
+        lazy: async () => ({
+          Component: (await import("@/pages/detail")).default,
+        }),
+      },
     ],
   },
 ];

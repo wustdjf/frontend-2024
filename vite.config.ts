@@ -1,26 +1,29 @@
 import path from "node:path";
 import { defineConfig } from "vite";
-import { compression } from "vite-plugin-compression2";
-import svgr from "vite-plugin-svgr";
 import react from "@vitejs/plugin-react-swc";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    { ...compression(), apply: "build" },
-    svgr({
-      svgrOptions: {
-        plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
-        svgoConfig: {
-          floatPrecision: 2,
-        },
+  plugins: [react()],
+  css: {
+    // 预处理器配置项
+    preprocessorOptions: {
+      less: {
+        math: "always",
+        javascriptEnabled: true,
       },
-    }),
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
     },
+  },
+  resolve: {
+    alias: [
+      {
+        find: /^~/,
+        replacement: "",
+      },
+      {
+        find: "@",
+        replacement: path.resolve(__dirname, "src"),
+      },
+    ],
   },
   build: {
     target: "es2015",
@@ -32,8 +35,8 @@ export default defineConfig({
         entryFileNames: "js/[name]-[hash].js",
         assetFileNames: "[ext]/[name]-[hash].[ext]",
         manualChunks: {
-          react: ["react", "react-dom", "react-router-dom", "zustand"],
-          antd: ["antd", "dayjs"],
+          react: ["react", "react-dom", "react-router-dom"],
+          antd: ["antd", "moment"],
         },
       },
     },

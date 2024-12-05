@@ -21,3 +21,5 @@ export interface ILoginResp {
     email: string;
   };
 }
+
+export type SortOrder = "descend" | "ascend" | null;
