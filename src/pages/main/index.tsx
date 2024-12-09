@@ -51,27 +51,24 @@ const MainPage: React.FC = () => {
   const [data, setData] = useState<Item[]>(originData);
   const [pageNum, setPageNum] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(20);
+  const [total, setTotal] = useState<number>(originData.length);
   const [status, setStatus] = useState<string>();
   const [priority, setPriority] = useState<string>();
   const [priorityOrder, setPriorityOrder] = useState<string>("descend");
 
-  const fetchData = async (): Promise<Item[]> => {
+  const fetchData = async (): Promise<{ list: Item[]; total: number }> => {
     return new Promise((resolve) => {
-      setTimeout(function () {
+      setTimeout(() => {
         const list = originData
           .filter((i) => {
-            if (statusList.includes(status as string)) {
-              return i.status === status;
-            } else {
-              return true;
-            }
+            return statusList.includes(status as string)
+              ? i.status === status
+              : true;
           })
           .filter((i) => {
-            if (priorityList.includes(priority as string)) {
-              return i.priority === priority;
-            } else {
-              return true;
-            }
+            return priorityList.includes(priority as string)
+              ? i.priority === priority
+              : true;
           })
           .sort((a, b) => {
             const numberA = parseInt(
@@ -83,18 +80,19 @@ const MainPage: React.FC = () => {
             return priorityOrder === "descend"
               ? numberA - numberB
               : numberB - numberA;
-          })
-          .slice(pageNum * pageSize, (pageNum + 1) * pageSize);
+          });
 
-        resolve(list);
+        const data = list.slice((pageNum - 1) * pageSize, pageNum * pageSize);
+        resolve({ list: data, total: list.length });
       }, 1000);
     });
   };
 
   useEffect(() => {
     const asyncFun = async () => {
-      const dataList = await fetchData();
-      setData(dataList);
+      const { list, total } = await fetchData();
+      setData(list);
+      setTotal(total);
     };
     asyncFun();
   }, [pageNum, pageSize, status, priority, priorityOrder]);
@@ -114,16 +112,14 @@ const MainPage: React.FC = () => {
     filters,
     sorter
   ) => {
-    setPageNum(pagination.current as number);
-    setPageSize(pagination.pageSize as number);
     if (!Array.isArray(sorter)) {
       setPriorityOrder(sorter.order as string);
     }
   };
 
-  const onPagination = (pageNum: number, pageSize: number) => {
-    setPageNum(pageNum);
-    setPageSize(pageSize);
+  const onPagination = (pageNum: number, size: number) => {
+    setPageNum(pageSize !== size ? 1 : pageNum);
+    setPageSize(size);
   };
 
   const columns = [
@@ -187,7 +183,7 @@ const MainPage: React.FC = () => {
           pagination={{
             current: pageNum,
             pageSize: pageSize,
-            total: originData.length,
+            total: total,
             showSizeChanger: true,
             showQuickJumper: true,
             showTotal: (total) => `共 ${total} 条数据`,

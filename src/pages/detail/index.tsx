@@ -128,15 +128,15 @@ const DetailPage: React.FC = () => {
       <Button>回复</Button>
 
       <h1>工单回复内容</h1>
-      {detailData.replies?.map((i) => {
+      {detailData.replies?.map((i, j) => {
         return (
-          <div className={styles.replyContainer}>
+          <div key={`${i.id}-${j}`} className={styles.replyContainer}>
             <h2>回复人: {i.operator.name}</h2>
             <h2>回复内容: {i.content}</h2>
             <h2>回复时间: {timeFormat(i.createTime)}</h2>
             <h2>回复图片: </h2>
-            {(i.images || []).map((p) => (
-              <img src={p} className={styles.img} />
+            {(i.images || []).map((p, q) => (
+              <img key={`img-${i.id}-${q}`} src={p} className={styles.img} />
             ))}
           </div>
         );

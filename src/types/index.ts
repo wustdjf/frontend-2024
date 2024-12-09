@@ -23,3 +23,5 @@ export interface ILoginResp {
 }
 
 export type SortOrder = "descend" | "ascend" | null;
+
+export type ValueOf<T> = T[keyof T];
